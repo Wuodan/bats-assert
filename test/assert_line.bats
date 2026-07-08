@@ -350,13 +350,18 @@ ERR_MSG
 invalid regular expression ${BASH_REMATCH[1]}
 --
 ERR_MSG
-  else
+  elif [[ "$output" =~ "Invalid extended regular expression" ]]; then
     assert_test_fail <<'ERR_MSG'
 
 -- ERROR: assert_line --
 Invalid extended regular expression: `[.*'
 --
 ERR_MSG
+  else
+    # Platform-specific error message format (e.g. Git Bash on Windows)
+    test "$status" -eq 1
+    [[ "$output" == *"ERROR: assert_line"* ]]
+    [[ "$output" == *"[.*"* ]]
   fi
 }
 

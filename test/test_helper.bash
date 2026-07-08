@@ -28,3 +28,15 @@ assert_test_fail() {
   test "${#lines[@]}" -eq "$num_lines"
   test "$output" == "$err_msg"
 }
+
+debug_assert_test_fail() {
+  local err_msg="${1-$(cat -)}"
+
+  if ! assert_test_fail "$err_msg"; then
+    printf 'DEBUG status=%s\n' "$status" >&2
+    printf 'DEBUG output=%q\n' "$output" >&2
+    printf 'DEBUG lines=' >&2
+    declare -p lines >&2
+    return 1
+  fi
+}

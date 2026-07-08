@@ -97,12 +97,17 @@ ERR_MSG
 invalid regular expression ${BASH_REMATCH[1]}
 --
 ERR_MSG
-  else
+  elif [[ "$output" =~ "Invalid extended regular expression" ]]; then
     assert_test_fail <<'ERR_MSG'
 
 -- ERROR: refute_regex --
 Invalid extended regular expression: `[.*'
 --
 ERR_MSG
+  else
+    # Platform-specific error message format; just verify structure
+    test "$status" -eq 1
+    [[ "$output" == *"ERROR: refute_regex"* ]]
+    [[ "$output" == *"[.*"* ]]
   fi
 }
