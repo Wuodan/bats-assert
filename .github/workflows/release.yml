@@ -22,6 +22,7 @@ jobs:
           tag: ${{ github.ref_name }}
 
   npm:
+    if: github.repository == 'bats-core/bats-assert'
     permissions: { id-token: write }
     runs-on: ubuntu-latest
     steps:
